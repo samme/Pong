@@ -31,7 +31,6 @@ function create() {
 	game.physics.arcade.checkCollision.right = false;
 	
 	LazerBeam = game.add.filter("LazerBeam", game.world.width, game.world.height, 0.5);
-	ballSpawn();
 	
 	playerPaddle = game.add.sprite(5, game.world.height * 0.5, 'paddle');
 	playerPaddle.anchor.set(0.5,1);
@@ -44,11 +43,20 @@ function create() {
 	enemyPaddle.anchor.set(0.5, 1);
 	game.physics.enable(enemyPaddle, Phaser.Physics.ARCADE);
 	enemyPaddle.body.immovable = true;
+	enemyPaddle.body.collideWorldBounds = true;
+	
+	ballSpawn();
 }
 function update() {
 	game.physics.arcade.collide(ball, playerPaddle, ballHitPaddle);
 	game.physics.arcade.collide(ball, enemyPaddle, ballHitPaddle);
 	playerPaddle.y = game.input.y || game.world.height*0.5;
+	
+	//Figure out which direction the ball is heading, if it's towards the enemy paddle start trying to hit the ball
+	if ( (enemyPaddle.y - ball.y < -15 || enemyPaddle.y - ball.y > 15)) {
+		enemyPaddle.body.velocity.y = (enemyPaddle.y - ball.y) * -10;
+		//console.log(ball.body.speed);
+	}
 }
 
 function render() {
@@ -90,6 +98,8 @@ function ballSpawn() {
 	ball.body.bounce.set(1);
 	ball.events.onOutOfBounds.add(ballLeaveScreen, this);
 	ball.filters = [LazerBeam];
+	
+	
 	
 	console.log("Ball spawned");
 }
