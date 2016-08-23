@@ -21,4 +21,4 @@ $RECYCLE.BIN/
 
 .gitignore
 .idea/workspace.xml
-.idea/
+.idea/**
