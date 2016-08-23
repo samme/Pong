@@ -1,0 +1,11 @@
+{
+  "predef" : [
+    "console",
+    "document",
+    "window",
+    "Phaser",
+    "PIXI",
+    "Float64Array"
+  ],
+  "globalstrict": true
+}
