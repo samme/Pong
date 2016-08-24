@@ -3,6 +3,7 @@
 var game = new Phaser.Game("90", "85", Phaser.WEBGL, 'game', {preload: preload, create: create, update: update, render: render});
 
 var ball;
+var newY;
 
 var playerPaddle;
 var playerScore = 0;
@@ -52,11 +53,13 @@ function update() {
 	game.physics.arcade.collide(ball, enemyPaddle, ballHitPaddle);
 	playerPaddle.y = game.input.y || game.world.height*0.5;
 	
-	//Figure out which direction the ball is heading, if it's towards the enemy paddle start trying to hit the ball
-	if ( (enemyPaddle.y - ball.y < -15 || enemyPaddle.y - ball.y > 15)) {
-		enemyPaddle.body.velocity.y = (enemyPaddle.y - ball.y) * -10;
-		//console.log(ball.body.speed);
-	}
+	if (ball.x % 10)
+		newY = ball.body.angle + ball.body.velocity.y * 2;
+	
+	if (enemyPaddle.y > newY + 20)
+		enemyPaddle.body.velocity.y = -200;
+	if (enemyPaddle.y < newY - 20)
+		enemyPaddle.body.velocity.y = 200;
 }
 
 function render() {
@@ -64,7 +67,7 @@ function render() {
 	//game.debug.spriteInfo(playerPaddle, 32, 32);
 	//game.debug.body(playerPaddle);
 	//game.debug.inputInfo();
-	//game.debug.text(ball.x, 50, 50);
+	game.debug.text(newY, 50, 50);
 	//game.debug.pointer(game.input.activePointer);
 }
 
@@ -86,19 +89,18 @@ function ballHitPaddle(ball, paddle) {
 }
 
 function ballSpawn() {
-	if (ball instanceof Object)
+	if (ball instanceof Object) {
 		ball.reset(50, 50);
-	else
+	} else {
 		ball = game.add.sprite(50, 50, 'ball');
-	
-	game.physics.enable(ball, Phaser.Physics.ARCADE);
+		game.physics.enable(ball, Phaser.Physics.ARCADE);
+		ball.body.collideWorldBounds = true;
+		ball.checkWorldBounds = true;
+		ball.body.bounce.set(1);
+		ball.events.onOutOfBounds.add(ballLeaveScreen, this);
+	}
 	ball.body.velocity.set(250, 250);
-	ball.body.collideWorldBounds = true;
-	ball.checkWorldBounds = true;
-	ball.body.bounce.set(1);
-	ball.events.onOutOfBounds.add(ballLeaveScreen, this);
-	ball.filters = [LazerBeam];
-	
+
 	
 	
 	console.log("Ball spawned");
