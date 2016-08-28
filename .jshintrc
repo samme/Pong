@@ -7,5 +7,6 @@
     "PIXI",
     "Float64Array"
   ],
-  "globalstrict": true
+  "globalstrict": true,
+  "curly": true
 }

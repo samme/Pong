@@ -53,13 +53,16 @@ function update() {
 	game.physics.arcade.collide(ball, enemyPaddle, ballHitPaddle);
 	playerPaddle.y = game.input.y || game.world.height*0.5;
 	
-	if (Math.ceil(ball.x) % 5 == 0)
+	if (Math.ceil(ball.x) % 5 === 0) {
 		newY = ball.body.angle + ball.body.velocity.y * 2;
+	}
 	
-	if (enemyPaddle.y > newY + 20)
+	if (enemyPaddle.y > newY + 20) {
 		enemyPaddle.body.velocity.y = -200;
-	if (enemyPaddle.y < newY - 20)
+	}
+	if (enemyPaddle.y < newY - 20) {
 		enemyPaddle.body.velocity.y = 200;
+	}
 }
 
 function render() {
@@ -72,10 +75,11 @@ function render() {
 }
 
 function ballLeaveScreen() {
-	if (ball.x >= game.world.width)
+	if (ball.x >= game.world.width) {
 		playerScore++;
-	else
+	} else {
 		playerScore--;
+	}
 	
 	playerScoreText.text = playerName + " score: " + playerScore;
 	ballSpawn();
