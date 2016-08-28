@@ -82,7 +82,7 @@ function ballLeaveScreen() {
 	}
 	
 	playerScoreText.text = playerName + " score: " + playerScore;
-	ballSpawn();
+	ballReset();
 }
 function ballHitPaddle(ball, paddle) {
 	//TODO (Maybe): Modify the bounce. The code below leads to some weird issues
@@ -93,19 +93,18 @@ function ballHitPaddle(ball, paddle) {
 }
 
 function ballSpawn() {
-	if (ball instanceof Object) {
-		ball.reset(50, 50);
-	} else {
-		ball = game.add.sprite(50, 50, 'ball');
-		game.physics.enable(ball, Phaser.Physics.ARCADE);
-		ball.body.collideWorldBounds = true;
-		ball.checkWorldBounds = true;
-		ball.body.bounce.set(1);
-		ball.events.onOutOfBounds.add(ballLeaveScreen, this);
-	}
-	ball.body.velocity.set(250, 250);
+	ball = game.add.sprite(50, 50, 'ball');
+	game.physics.enable(ball, Phaser.Physics.ARCADE);
+	ball.body.collideWorldBounds = true;
+	ball.checkWorldBounds = true;
+	ball.body.bounce.set(1);
+	ball.events.onOutOfBounds.add(ballLeaveScreen, this);
 
-	
-	
+	ballReset();
 	console.log("Ball spawned");
+}
+
+function ballReset () {
+	ball.reset(50, 50);
+	ball.body.velocity.set(250, 250);
 }
