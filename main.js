@@ -53,7 +53,7 @@ function update() {
 	game.physics.arcade.collide(ball, enemyPaddle, ballHitPaddle);
 	playerPaddle.y = game.input.y || game.world.height*0.5;
 	
-	if (ball.x % 10)
+	if (Math.ceil(ball.x) % 5 == 0)
 		newY = ball.body.angle + ball.body.velocity.y * 2;
 	
 	if (enemyPaddle.y > newY + 20)
@@ -67,7 +67,7 @@ function render() {
 	//game.debug.spriteInfo(playerPaddle, 32, 32);
 	//game.debug.body(playerPaddle);
 	//game.debug.inputInfo();
-	game.debug.text(newY, 50, 50);
+	game.debug.text(newY + " " + ball.x, 50, 50);
 	//game.debug.pointer(game.input.activePointer);
 }
 
